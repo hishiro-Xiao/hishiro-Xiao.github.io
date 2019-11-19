@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="zh" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>分治算法--天际线问题 - Xiao&#39;s Blog</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="hishiro-Xiao,"> 
+    <meta name="description" content="及时行乐,分治算法–天际线问题
+题目描述：
+
+每个建筑物的几何信息用三元组 [Li，Ri，Hi] 表示，其中 Li 和 Ri 分别是第 i 座建筑物左右边缘的 x 坐标，Hi是其高度。可以保证 0 ≤ Li,,"> 
+    <meta name="author" content="Xiao"> 
+    <link rel="alternative" href="atom.xml" title="Xiao&#39;s Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Xiao&#39;s Blog</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" target="_blank" rel="noopener" data-url="http://yoursite.com"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">分治算法--天际线问题</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" target="_blank" rel="noopener" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;" target="_blank" rel="noopener"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">分治算法--天际线问题</h1>
+        <div class="stuff">
+            <span>十月 10, 2019</span>
+            
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/PYTHON/" rel="tag">PYTHON</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h1 id="分治算法–天际线问题"><a href="#分治算法–天际线问题" class="headerlink" title="分治算法–天际线问题"></a>分治算法–天际线问题</h1><hr>
+<p>题目描述：</p>
+<blockquote>
+<p>每个建筑物的几何信息用三元组 [Li，Ri，Hi] 表示，其中 Li 和 Ri 分别是第 i 座建筑物左右边缘的 x 坐标，Hi<br>是其高度。可以保证 0 ≤ Li, Ri ≤ INT_MAX, 0 &lt; Hi ≤ INT_MAX 和 Ri - Li &gt;<br>0。您可以假设所有建筑物都是在绝对平坦且高度为 0 的表面上的完美矩形。</p>
+<p>例如，图A中所有建筑物的尺寸记录为：[ [2 9 10], [3 7 15], [5 12 12], [15 20 10], [19 24<br>8] ] 。</p>
+<p>输出是以 [ [x1,y1], [x2, y2], [x3, y3], … ]<br>格式的“关键点”（图B中的红点）的列表，它们唯一地定义了天际线。关键点是水平线段的左端点。请注意，最右侧建筑物的最后一个关键点仅用于标记天际线的终点，并始终为零高度。此外，任何两个相邻建筑物之间的地面都应被视为天际线轮廓的一部分。</p>
+<p>例如，图B中的天际线应该表示为：[ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8],<br>[24, 0] ]。</p>
+<p>说明:</p>
+<p>任何输入列表中的建筑物数量保证在 [0, 10000] 范围内。 输入列表已经按左 x 坐标 Li  进行升序排列。 输出列表必须按 x<br>位排序。 输出天际线中不得有连续的相同高度的水平线。例如 […[2 3], [4 5], [7 5], [11 5], [12<br>7]…] 是不正确的答案；三条高度为 5 的线应该在最终输出中合并为一个：[…[2 3], [4 5], [12 7], …]</p>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/the-skyline-problem" target="_blank" rel="noopener">https://leetcode-cn.com/problems/the-skyline-problem</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+</blockquote>
+<p>算法思路：<br>官方给的分支算法的解法，看了半天，自己也写了一遍，什么没懂，归并地方一直出错，索性自己写得了。（还事先重新写了一遍归并排序，抄官方的代码抄到我怀疑我数据结构白学了。）<br>我的做法：第一步大致都一样，就是分治，具体代码是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def getSkyline(self, buildings: List[List[int]]) -&gt; List[List[int]]:</span><br><span class="line">    len_buildings = len(buildings)</span><br><span class="line"></span><br><span class="line">    if len_buildings == 0:</span><br><span class="line">        return []</span><br><span class="line">    if len_buildings == 1:</span><br><span class="line">        building_start, building_end, building_height = buildings[0]</span><br><span class="line">        return [[building_start, building_height], [building_end, 0]]</span><br><span class="line"></span><br><span class="line">    left_skyline = self.getSkyline(buildings[:len_buildings // 2])</span><br><span class="line">    right_skyline = self.getSkyline(buildings[len_buildings // 2:])</span><br><span class="line"></span><br><span class="line">    result = self.merge_building(left_skyline, right_skyline)</span><br><span class="line">    return result</span><br></pre></td></tr></table></figure>
+
+<p>归并的思想就是将N个大楼分成两部分，分别对左右两部分求解，大问题化小问题，最后如果左边部分没有建筑物，返回空List对象[]，如果只有一栋建筑，返回这栋建筑的天际线（这个就简单了），比如题目中的个大楼[2, 9, 10]指的就是x坐标2到9，高度为10的大楼，那么它的天际线就是[[2, 10][9, 0]]（只需记录高度变化的那个点）</p>
+<p>这样就获得了以上的递归函数，之后的问题就是如果合并俩个天际线left_skyline和right_skyline。下面几个解答我都没看懂，所以就自己想了一个，前两种想法最后都失败了，都是按照别人的解答“临摹”的算法，所以最后浏览器一关，自己想吧。</p>
+<p>我想的是，假设有两个无限长的直线（我称之为current_l和current_r），分别记录左边部分天际线和右边部分的上次访问时的高度，一开始都设定为0，然后开始遍历图（List）中的点。</p>
+<p>如果遍历到左边部分的点，会出现两种情况，这个点对我们的天际线产生了影响，或者没有任何影响。以下以遍历到左边部分的点left_dot作说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">---------- current_r ----------</span><br><span class="line">---------- left_dot ----------</span><br><span class="line">---------- current_l ----------</span><br></pre></td></tr></table></figure>
+
+<p>以上我把点也延伸成一条直线，那么如果我想要对当前的天际线产生影响，那我必须对于上一次的高度current_l产生变化，比current_l高的话，那说明这个点升高了，那么怎么判断我这个点有没有把整个天际线“撑”高呢？</p>
+<p>那就要看left_dot对于current_r的位置了，也就是说，我之前访问过的右边部分的高度如果还没我现在这个点高的话，那么天际线必然被撑高了，即上面的情况，在这种情况下，我的目前访问到的这个点产生的高度变化被current_r覆盖了。</p>
+<p>所以产生变化的情况一如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">---------- left_dot ----------</span><br><span class="line">---------- current_r ----------</span><br><span class="line">---------- current_l ----------</span><br></pre></td></tr></table></figure>
+
+<p>那么点下降的情况呢？<br>我实验得到的结果是，只有当left_dot比current_l低，且不能比current_r还要低（即left_dot &gt;= current_r）时，left_dot的下降变化才会对天际线产生影响。因为，如果left_dot下降到比上次访问时两部分的高度还要低时，这个变化会被右边部分覆盖。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">---------- current_l ----------</span><br><span class="line">---------- left_dot ----------</span><br><span class="line">---------- current_r ----------</span><br></pre></td></tr></table></figure>
+
+<p>此外还有一种下降的情况（这是在第二次提交时，解答出错时才看到的情况，一开始根本没考虑到），就是点在下降过程中被另一部分“拦截”了（这是left_dot比current_l和current_r都低时的特例，要求current_l &gt; current_r &gt; left_dot）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">---------- current_l ----------</span><br><span class="line">---------- current_r ----------</span><br><span class="line">---------- left_dot ----------</span><br></pre></td></tr></table></figure>
+
+<p>简而言之，左边部分要影响天际线（即左边点要放入结果集中），左边部分要么升高到足以覆盖右边部分，要么下降到仍然可以覆盖右边部分的位置，亦或是，在下降的过程中被右边部分截住了（其实把两部分的交点看作一个新的点），因为两部分始终处于覆盖和被覆盖的关系中。</p>
+<p>所以一开始我决定先进行一遍归并排序，这样可以获得点排序好的List，但是写完归并后再去处理合并好的result时，发现写法和归并是一样的，然后发现这两部分可以合并在一起，因为归并每次排序时都是从两个数组中选一个最小的点出来，那么这一步其实已经可以知道当前点来自左边还是右边，所以可以一边归并排序（实则并没有排序），一边绘制天际线（这也是解答中我看不懂的地方）<br>具体代码实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">def merge_building(self, left: List[List], right: List[List]) -&gt; List[List]:</span><br><span class="line">    point_l = point_r = 0</span><br><span class="line">    result = []</span><br><span class="line">    current_l = current_r = 0</span><br><span class="line"></span><br><span class="line">    while point_l &lt; len(left) and point_r &lt; len(right):</span><br><span class="line">        left_x, left_h = left[point_l]</span><br><span class="line">        right_x, right_h = right[point_r]</span><br><span class="line"></span><br><span class="line">        if left_x &lt; right_x:</span><br><span class="line">            # 当前的点为左边大楼的点</span><br><span class="line">            if (left_h &gt; current_l and left_h &gt; current_r) or (current_r &lt;= left_h &lt; current_l):</span><br><span class="line">                result.append([left_x, left_h])</span><br><span class="line">            # left下降的趋势被right挡住了</span><br><span class="line">            elif left_h &lt; current_r &lt; current_l:</span><br><span class="line">                result.append([left_x, current_r])</span><br><span class="line">            current_l = left_h</span><br><span class="line">            point_l += 1</span><br><span class="line">        elif left_x &gt; right_x:</span><br><span class="line">            # 当前的点为右边大楼的点</span><br><span class="line">            if (right_h &gt; current_l and right_h &gt; current_r) or (current_l &lt;= right_h &lt; current_r):</span><br><span class="line">                result.append([right_x, right_h])</span><br><span class="line">            elif right_h &lt; current_l &lt; current_r:</span><br><span class="line">                result.append([right_x, current_l])</span><br><span class="line">            current_r = right_h</span><br><span class="line">            point_r += 1</span><br><span class="line">        if left_x == right_x:</span><br><span class="line">            left_dh = left_h - current_l</span><br><span class="line">            right_dh = right_h - current_r</span><br><span class="line"></span><br><span class="line">            if left_dh + right_dh != 0:</span><br><span class="line">                if left_dh &gt; right_dh:</span><br><span class="line">                    result.append([left_x, left_h])</span><br><span class="line">                else:</span><br><span class="line">                    result.append([left_x, right_h])</span><br><span class="line">            current_l = left_h</span><br><span class="line">            current_r = right_h</span><br><span class="line">            point_l += 1</span><br><span class="line">            point_r += 1</span><br><span class="line"></span><br><span class="line">    while point_l &lt; len(left):</span><br><span class="line">        result.append(left[point_l])</span><br><span class="line">        point_l += 1</span><br><span class="line"></span><br><span class="line">    while point_r &lt; len(right):</span><br><span class="line">        result.append(right[point_r])</span><br><span class="line">        point_r += 1</span><br><span class="line"></span><br><span class="line">    return result</span><br></pre></td></tr></table></figure>
+
+<p>其中部分代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">if left_x == right_x:</span><br><span class="line">    left_dh = left_h - current_l</span><br><span class="line">    right_dh = right_h - current_r</span><br><span class="line"></span><br><span class="line">    if left_dh + right_dh != 0:</span><br><span class="line">        if left_dh &gt; right_dh:</span><br><span class="line">            result.append([left_x, left_h])</span><br><span class="line">        else:</span><br><span class="line">            result.append([left_x, right_h])</span><br><span class="line">    current_l = left_h</span><br><span class="line">    current_r = right_h</span><br><span class="line">    point_l += 1</span><br><span class="line">    point_r += 1</span><br></pre></td></tr></table></figure>
+<p>是考虑两栋大楼边界靠在一起的情况，这也是提交时官方的测试用例里我没考虑到情况，例如：</p>
+<blockquote>
+<pre><code>buildings_3 = [
+    [1, 2, 1],
+    [1, 2, 2],
+    [1, 2, 3]
+]</code></pre></blockquote>
+<p>我想了一下这里要考虑四条边（上次高度两条边，当前点的两条边）的高低情况，所以想了很久怎么减少一些情况（减少if语句），我的做法是计算当前两个点的高度相对变化率，如果变化率大（下降的情况对应负变化率），那么这个变化率对高度会产生影响。其实变化率很好算，因为我们记录了上一次的高度current_l和crrent_r，所以只需要用当前点的高度减去上一次的高度就是变化率了。</p>
+<p>最后写了一天终于通过了，呵。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+        <div class='side'>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#分治算法–天际线问题"><span class="toc-number">1.</span> <span class="toc-text">分治算法–天际线问题</span></a></li></ol>
+        </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
