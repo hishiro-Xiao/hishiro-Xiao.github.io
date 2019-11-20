@@ -37,16 +37,16 @@
     <div id="single">
     <div id="top" style="display: block;">
     <div class="bar" style="width: 0;"></div>
-    <a class="icon-home image-icon" href="javascript:;" target="_blank" rel="noopener" data-url="http://yoursite.com"></a>
+    <a class="icon-home image-icon" href="javascript:;" data-url="https://hishiro-xiao.github.io"></a>
     <div title="播放/暂停" class="icon-play"></div>
     <h3 class="subtitle">分治算法--天际线问题</h3>
     <div class="social">
         <!--<div class="like-icon">-->
-            <!--<a href="javascript:;" target="_blank" rel="noopener" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
         <!--</div>-->
         <div>
             <div class="share">
-                <a title="获取二维码" class="icon-scan" href="javascript:;" target="_blank" rel="noopener"></a>
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
             </div>
             <div id="qr"></div>
         </div>
@@ -75,7 +75,7 @@
 <p>例如，图B中的天际线应该表示为：[ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8],<br>[24, 0] ]。</p>
 <p>说明:</p>
 <p>任何输入列表中的建筑物数量保证在 [0, 10000] 范围内。 输入列表已经按左 x 坐标 Li  进行升序排列。 输出列表必须按 x<br>位排序。 输出天际线中不得有连续的相同高度的水平线。例如 […[2 3], [4 5], [7 5], [11 5], [12<br>7]…] 是不正确的答案；三条高度为 5 的线应该在最终输出中合并为一个：[…[2 3], [4 5], [12 7], …]</p>
-<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/the-skyline-problem" target="_blank" rel="noopener">https://leetcode-cn.com/problems/the-skyline-problem</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/the-skyline-problem">https://leetcode-cn.com/problems/the-skyline-problem</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
 </blockquote>
 <p>算法思路：<br>官方给的分支算法的解法，看了半天，自己也写了一遍，什么没懂，归并地方一直出错，索性自己写得了。（还事先重新写了一遍归并排序，抄官方的代码抄到我怀疑我数据结构白学了。）<br>我的做法：第一步大致都一样，就是分治，具体代码是：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def getSkyline(self, buildings: List[List[int]]) -&gt; List[List[int]]:</span><br><span class="line">    len_buildings = len(buildings)</span><br><span class="line"></span><br><span class="line">    if len_buildings == 0:</span><br><span class="line">        return []</span><br><span class="line">    if len_buildings == 1:</span><br><span class="line">        building_start, building_end, building_height = buildings[0]</span><br><span class="line">        return [[building_start, building_height], [building_end, 0]]</span><br><span class="line"></span><br><span class="line">    left_skyline = self.getSkyline(buildings[:len_buildings // 2])</span><br><span class="line">    right_skyline = self.getSkyline(buildings[len_buildings // 2:])</span><br><span class="line"></span><br><span class="line">    result = self.merge_building(left_skyline, right_skyline)</span><br><span class="line">    return result</span><br></pre></td></tr></table></figure>
