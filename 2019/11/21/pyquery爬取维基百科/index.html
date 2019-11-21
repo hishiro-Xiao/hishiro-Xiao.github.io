@@ -5,15 +5,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xiao的博客开张了 - Xiao&#39;s Blog</title>
+    <title>pyquery爬取维基百科时遇到的蛋疼问题 - Xiao&#39;s Blog</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="hishiro-Xiao,"> 
-    <meta name="description" content="及时行乐,我的博客Xiao的博客终于搞出来了，不容易，鸽了快两年了（咕咕咕）
-那么具体要说什么也咕了吧（咕咕咕）
-看今后的就行了
-"> 
+    <meta name="description" content="及时行乐,pyquery爬取维基百科时遇到的蛋疼问题因为期末作业，需要爬维基百科的关于武器的数据，相关界面如下（ https://en.wikipedia.org/wiki/List_of_artillery,"> 
     <meta name="author" content="Xiao"> 
     <link rel="alternative" href="atom.xml" title="Xiao&#39;s Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.ico"> 
@@ -39,7 +36,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;" data-url="https://hishiro-xiao.github.io"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">Xiao的博客开张了</h3>
+    <h3 class="subtitle">pyquery爬取维基百科时遇到的蛋疼问题</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -57,16 +54,37 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">Xiao的博客开张了</h1>
+        <h1 class="title">pyquery爬取维基百科时遇到的蛋疼问题</h1>
         <div class="stuff">
-            <span>十一月 20, 2019</span>
+            <span>十一月 21, 2019</span>
             
+  <ul class="post-tags-list" itemprop="keywords"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/PYTHON/" rel="tag">PYTHON</a></li></ul>
+
 
         </div>
         <div class="content markdown">
-            <h1 id="我的博客"><a href="#我的博客" class="headerlink" title="我的博客"></a>我的博客</h1><p>Xiao的博客终于搞出来了，不容易，鸽了快两年了（咕咕咕）</p>
-<p>那么具体要说什么也咕了吧（咕咕咕）</p>
-<p>看今后的就行了</p>
+            <h1 id="pyquery爬取维基百科时遇到的蛋疼问题"><a href="#pyquery爬取维基百科时遇到的蛋疼问题" class="headerlink" title="pyquery爬取维基百科时遇到的蛋疼问题"></a>pyquery爬取维基百科时遇到的蛋疼问题</h1><p>因为期末作业，需要爬维基百科的关于武器的数据，相关界面如下（ <a href="https://en.wikipedia.org/wiki/List_of_artillery_by_name">https://en.wikipedia.org/wiki/List_of_artillery_by_name</a> ）：</p>
+<p><img src="/img/%E6%88%AA%E5%9B%BE/1.png" alt="picutre"></p>
+<p>结构如下</p>
+<p><img src="/img/%E6%88%AA%E5%9B%BE/2.png" alt="picture"></p>
+<p>我需要的是每种武器的链接，可以看出，每一条记录存放在表格的每一行，而且一行中可能包含多个链接，所以需要进行筛选。那么用 jQuery 查询的话大概是这样的</p>
+<pre><code>$(&quot;table tbody tr&apos;).find(&apos;td:first a&apos;)</code></pre><p>然后在 Chrome 的控制台用运行之后也是可行的，完美的找到了我要的每一个武器的链接地址。但是，当我打开爬虫，用 pyquery 查询时，根本无法筛选掉后面 “美国”、“英国” 等的超链接，也就是说 td:first 这个部分根本没有起到作用。</p>
+<p>我试了各种别的方式来获取元素，比如说改成</p>
+<pre><code>$(&quot;table tbody tr&apos;).find(&apos;td:eq(0) a&apos;)</code></pre><p>也无法筛选掉后面的元素（但是这边很奇怪的获取了全部三列的元素），甚至怀疑是不是 pyquery 有 bug。</p>
+<p>于是上百度查 “pyquery bug”，然后看到很多人说 pyquery 有默认解析的问题，要改成 “html” 解析，我试了一下，无果。</p>
+<p>然后又看到有一篇博客提到了和我很像的问题，博文链接 <a href="https://www.jianshu.com/p/4a0ff42b7a2c">https://www.jianshu.com/p/4a0ff42b7a2c</a> 这位博主获取不到 tbody 里的内容，是因为不支持 tbody 这个标签产生的问题，然而我这里可以获取到，只是获取多了。我还是照着他说的改了一下，发现并不是 table 标签的问题。</p>
+<p>然后高潮来了，博主查询表格时用的是</p>
+<pre><code>td:nth-child(2)</code></pre><p>然后我也阴差阳错般地跟着把 td:first 改成了 td:nth-child(0) 结果是什么都没获得，于是我很奇怪，又改成了 td:nth-child(1) ，然后就对了！就对了？？？</p>
+<p>WTF？？？我把查询代码放到控制台运行了一下和我第一条语句得到的结果一模一样，说明这两条语句都是对的，那为什么到pyquery这边不能用了呢？</p>
+<p>我试着获取了一下</p>
+<pre><code>td:nth-child(2)
+td:nth-child(3)
+td:nth-child(4)</code></pre><p>的数据，4th 的数据是空的（因为表格一行只有三列），其他都是对应的数据，难道说pyquery里面的子元素下标是从1开始的？？</p>
+<p>于是我改成</p>
+<pre><code>td:eq(1)</code></pre><p>但是，什么都没有获取到，反倒是之前的 eq(0) 获取到了全部三列的元素，真有你的啊 pyquery</p>
+<p>那么问题是解决了，但是问题产生的原因呢，我还是不清楚，我的猜测是，pyquery 在获取td标签时，把一整行（tr）的 td 标签的内容，全都放到一个 td 标签下了，并改成了这个td的子元素了，导致了我只能获取td的子元素而获取不到 tr 的第 n 个 td 元素。</p>
+<p>为此，我去试着爬了一下别的带有表格的网站，结果也是一样，只能用 nth-child 来获取一行中的第 n 列的元素，神秘。</p>
+<p>如果有dalao知道原因，请告诉我，お願い。</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
@@ -101,7 +119,7 @@
     </div>
     
         <div class='side'>
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#我的博客"><span class="toc-number">1.</span> <span class="toc-text">我的博客</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pyquery爬取维基百科时遇到的蛋疼问题"><span class="toc-number">1.</span> <span class="toc-text">pyquery爬取维基百科时遇到的蛋疼问题</span></a></li></ol>
         </div>
     
 </div>
